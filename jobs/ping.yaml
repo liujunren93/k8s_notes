@@ -1,0 +1,20 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ping
+  namespace: test
+  labels:
+    app: test-job
+spec:
+  template:
+    metadata:
+      name: name
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: busybox
+          image: busybox
+          command:
+            - ping
+            - baidu.com

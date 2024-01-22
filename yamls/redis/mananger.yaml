@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-manager
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: redis-manager
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-manager
+    spec:
+      containers:
+        - name: name
+          image: redis
+        - name: busybox
+          image: busybox
+          command: ["sleep"]
+          args: ["100000"]

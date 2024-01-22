@@ -1,0 +1,20 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+  namespace: test
+spec:
+  selector:
+    app: nginx-deployment
+  type: NodePort
+  ports:
+    # - name: nginx-port1
+      # protocol: TCP
+      # port: 80
+      # targetPort: 8080
+    - name: nginx-port2
+      protocol: TCP
+      port: 8081
+      nodePort: 30002
+      targetPort: 8080

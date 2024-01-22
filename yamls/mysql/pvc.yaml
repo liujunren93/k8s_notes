@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: test
+  labels:
+    app: mysql
+spec:
+  storageClassName: share-mysql
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi

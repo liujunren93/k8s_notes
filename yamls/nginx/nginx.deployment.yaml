@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: nginx-pod
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx-pod
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+      #     volumeMounts:
+      #       - mountPath: /etc/nginx/conf.d/
+      #         name: config
+      # volumes:
+      #   - name: config
+      #     configMap:
+      #       name: nginx-deployment-config-8080
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+  namespace: test
+spec:
+  selector:
+    app: nginx-pod
+  # type: NodePort
+  ports:
+    - name: nginx-port1
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: nginx-port2
+      protocol: TCP
+      port: 8081
+      # nodePort: 30002
+      targetPort: 80

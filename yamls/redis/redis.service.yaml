@@ -1,0 +1,14 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: test
+  name: redis-test-service
+spec:
+  selector:
+    app: redis
+  type: ClusterIP
+  ports:
+    - name: redisport
+      port: 6379
+      targetPort: 6379

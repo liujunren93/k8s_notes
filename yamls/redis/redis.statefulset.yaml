@@ -1,0 +1,83 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: test
+  name: redis-service
+spec:
+  selector:
+    app: redis
+  clusterIP: None
+  ports:
+    - name: redis-port
+      port: 6379
+      targetPort: 6379
+    # - name: cluster-redis-port
+    #   port: 16379
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: test
+  name: redis-service-node
+spec:
+  selector:
+    app: redis
+  type: NodePort
+  ports:
+    - name: name-of-the-port
+      port: 6379
+      targetPort: 6379
+      nodePort: 30001
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  serviceName: redis-service
+  replicas: 6
+  template:
+    metadata:
+      labels:
+        app: redis
+      annotations:
+        configmap.fabric8.io/update-on-change: foo
+    spec:
+      terminationGracePeriodSeconds: 10
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - redis
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      containers:
+        - name: redis
+          image: redis
+          command:
+            - redis-server
+          args:
+            - /etc/redis/redis.conf
+          ports:
+            - containerPort: 6379
+              name: redis
+            - containerPort: 16379
+              name: cluster
+          volumeMounts:
+            - name: redis-conf
+              mountPath: /etc/redis/
+      volumes:
+        - name: redis-conf
+          configMap:
+            name: redis-cluster

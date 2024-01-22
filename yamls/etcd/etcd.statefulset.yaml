@@ -1,0 +1,73 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: test
+  name: etcd-service
+spec:
+  selector:
+    app: etcd
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: "2379"
+      port: 2379
+      targetPort: 2379
+    - name: "2380"
+      port: 2380
+      targetPort: 2380
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: test
+  name: etcd
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: etcd
+  serviceName: etcd-service
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: busybox
+          image: busybox
+          command:
+            - "sleep"
+            - "100000"
+        - name: etcd
+          image: registry.cn-hangzhou.aliyuncs.com/share_saas/etcd:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 2379
+          command:
+            - /bin/sh
+            - -exec
+            - |
+              mkdir -p /data/etcd/$(hostname) \
+              & /work/etcd \
+              --name=$(hostname) \
+              --data-dir=/data/etcd/$(hostname) \
+              --listen-client-urls=http://0.0.0.0:2379 \
+              --advertise-client-urls=http://$(hostname).etcd-service.test.svc.cluster.local:2379 \
+              --listen-peer-urls=http://0.0.0.0:2380 \
+              --initial-advertise-peer-urls=http://$(hostname).etcd-service.test.svc.cluster.local:2380 \
+              --initial-cluster=etcd-0=http://etcd-0.etcd-service.test.svc.cluster.local:2380,etcd-1=http://etcd-1.etcd-service.test.svc.cluster.local:2380,etcd-2=http://etcd-2.etcd-service.test.svc.cluster.local:2380 \
+              --initial-cluster-token=etcd-cluster-1 \
+              --initial-cluster-state=new \
+              --log-level=info \
+              --logger=zap \
+              --log-outputs=stderr
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: etcd-pvc

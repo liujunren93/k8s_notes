@@ -1,0 +1,35 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: test
+  name: busybox-service
+spec:
+  selector:
+    app: busybox
+  ports:
+    - name: busybox-port
+      port: 6379
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: busybox
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: busybox # has to match .spec.template.metadata.labels
+  serviceName: busybox-service
+  replicas: 3 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: busybox # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["sleep"]
+        args: ["100000"]

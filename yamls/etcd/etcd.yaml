@@ -1,0 +1,45 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  etcd-service
+spec:
+  selector:
+    app:  etcd
+  type:  ClusterIP
+  clusterIP: None
+  ports:
+  - name:  "2379"
+    port:  2379
+    targetPort:  2379
+  - name:  "2380"
+    port:  2380
+    targetPort:  2380
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: etcd
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+      - name: etcd
+        image: egistry.aliyuncs.com/google_containers/etcd:3.5.6-0
+        command: 
+          etcd
+        args:
+           - --listen-client-urls http://0.0.0.0:2379 
+           - --advertise-client-urls http://127.0.0.1:4379  ##客户端通告地址
+           - --listen-peer-urls http://0.0.0.0:2380 ##集群通信监听地址
+           - --initial-advertise-peer-urls http://etcd2:2380  ##客户端通告地址
+           - --initial-cluster etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380 
+           - --initial-cluster-token etcd-cluster-1 
+           - --initial-cluster-state new 
+           - --log-level info 
+           - --logger zap 
+           - --log-outputs stderr

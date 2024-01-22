@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etcd-pvc
+  namespace: test
+  labels:
+    app: etcd
+spec:
+  storageClassName: share-etcd
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi

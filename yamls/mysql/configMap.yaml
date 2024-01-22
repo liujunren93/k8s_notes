@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: test
+  labels:
+    app: mysql-config
+data:
+  mysqld.cnf: |2-
+      [mysqld]
+      user=mysql

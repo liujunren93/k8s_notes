@@ -1,0 +1,77 @@
+{
+	"uid": "131",
+	"tasks": [
+		{
+			"vid": "658a2c494464dc2b73d9266a-01",
+			"priority": "0",
+			"input": {
+				"in_uri": "videos/online/370b89e6432249bf82953734e8a58966.mp4"
+			},
+			"out_list": [
+				{
+					"svid": "130240360991834114",
+					"out_format": "3gp",
+					"out_format_info": {
+						"file_path": "output/test/104/202312/26/370b89e6432249bf82953734e8a58966/vrbt/",
+						"file_name": "130240360991834114.3gp"
+					},
+					"template_id": "custom_template",
+					"template_info": {
+						"video": {
+							"enable": true,
+							"sizing_policy": "shrinkToFit",
+							"params": {
+								"codec_name": "h264",
+								"res": {
+									"width": 540,
+									"height": 960
+								},
+								"bit_rate": 800000,
+								"high_rate": 900000,
+								"frame_rate": 30,
+								"gop_size": 60,
+								"pix_fmt": "420",
+								"rate_control": "vbr",
+								"refs": 4,
+								"aspect_ratio": "9:16",
+								"level": "3.0",
+								"profile": "baseline",
+								"bit_depth": 8,
+								"hdr_type": "SDR",
+								"color_primaries": "bt709",
+								"color_transfer": "SDR",
+								"deInterlace": true,
+								"scan_type": "progressive",
+								"aspect_mode": "shrinkToFit",
+								"video_pad_mode": 1,
+								"i_adapt": 1
+							},
+							"video_enhance_mode": 1
+						},
+						"audio": {
+							"enable": true,
+							"params": {
+								"codec_name": "amr_wb",
+								"channels": "1",
+								"bit_rate": 23850,
+								"sample_rate": 16000,
+								"audio_ebur128": true,
+								"volume": 1
+							}
+						}
+					},
+					"unsharp": {
+						"enable": true,
+						"lx_value": 7,
+						"ly_value": 7,
+						"la_value": 1,
+						"cx_value": 5,
+						"cy_value": 5,
+						"ca_value": 0.6
+					}
+				}
+			],
+			"clusterId": "65444097467c772564f7f68e"
+		}
+	]
+}

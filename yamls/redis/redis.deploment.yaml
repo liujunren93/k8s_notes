@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: test
+  labels:
+    name: redis
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: test-redis
+  template:
+    metadata:
+      labels:
+        app: test-redis
+    spec:
+      containers:
+        - image: redis
+          name: test-redis
+          ports:
+            - containerPort: 6379
+              name: redis-port
+          volumeMounts:
+            - name: redis-conf
+              mountPath: /etc/redis/
+        - image: busybox
+          name: test-redis-busybox
+          command: ["sleep"]
+          args: ["100000"]
+      volumes:
+        - name: redis-conf
+          configMap:
+            name: redis-cluster

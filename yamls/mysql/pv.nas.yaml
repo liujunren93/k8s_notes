@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-nas
+  namespace: test
+  labels:
+    type: local
+spec:
+  storageClassName: share-mysql
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /export/mysql
+    server: 192.168.160.132
