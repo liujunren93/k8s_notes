@@ -30,14 +30,14 @@ masterauth 123456
 ```
 # --cluster create 创建集群实例列表 IP:PORT IP:PORT IP:PORT
 # --cluster-replicas 复制因子1（即每个主节点需1个从节点）
-./bin/redis-cli  --cluster create --cluster-replicas 1 redis-0.redis-service.test.svc.cluster.local:6379 redis-1.redis-service.test.svc.cluster.local:6379 redis-2.redis-service.test.svc.cluster.local:6379 redis-3.redis-service.test.svc.cluster.local:6379 redis-4.redis-service.test.svc.cluster.local:6379 redis-5.redis-service.test.svc.cluster.local:6379
+./bin/redis-cli  --cluster create --cluster-replicas 1 http://redis-0.redis-service.test.svc.cluster.local:6379 http://redis-1.redis-service.test.svc.cluster.local:6379 redis-2.redis-service.test.svc.cluster.local:6379 http://redis-3.redis-service.test.svc.cluster.local:6379 http://redis-4.redis-service.test.svc.cluster.local:6379 http://redis-5.redis-service.test.svc.cluster.local:6379
 
 ```
 注意：hostname 需要换成ip
 	./bin/redis-cli  --cluster create --cluster-replicas 1 \
-	 10.245.2.177:6379 \
-	 10.245.1.218:6379 \
-	 10.245.2.178:6379 \
-	 10.245.1.219:6379 \
-	 10.245.2.179:6379 \
-   10.245.1.220:6379
+	 10.245.1.247:6379 \
+	 10.245.2.4:6379 \
+	 10.245.1.248:6379 \
+	 10.245.2.5:6379 \
+	 10.245.1.249:6379 \
+   10.245.2.6:6379

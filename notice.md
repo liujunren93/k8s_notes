@@ -1,26 +1,28 @@
-# service
-- ### 概念：
-   Kubernetes 中 Service 是 将运行在一个或一组 Pod 上的网络应用程序公开为网络服务的方法。
-   
-- ### yaml
-	```yaml
-    apiVersion: v1
-    kind: Service
-    metadata:
-        name: my-service
-    spec:
-        selector:
-            app.kubernetes.io/name: MyApp
-        ports:
-           - protocol: TCP
-              port: 80
-              type: [ClusterIP(default),NodePort,LoadBalancer,ExternalName]
-              targetPort: [端口，pod.name] // 绑定到pod
-							nodePort: 30000   # NodePort 下使用 暴露给外部的 NodePort
-	     
-	```
-		type: 
-			ClusterIP:默认值，内部访问
-
-# statefulset
-# deployment
+## 1, failed: open /run/flannel/subnet.env: no such file or directory
+### master:
+``` bash
+cat > /run/flannel/subnet.env <<EOF
+FLANNEL_NETWORK=10.245.0.0/16
+FLANNEL_SUBNET=10.245.0.1/24
+FLANNEL_MTU=1450
+FLANNEL_IPMASQ=true
+EOF
+```
+### node1:
+``` bash
+cat > /run/flannel/subnet.env <<EOF
+FLANNEL_NETWORK=10.245.0.0/16
+FLANNEL_SUBNET=10.245.1.1/24
+FLANNEL_MTU=1450
+FLANNEL_IPMASQ=true
+EOF
+```
+### node2:
+``` bash
+cat > /run/flannel/subnet.env <<EOF
+FLANNEL_NETWORK=10.245.0.0/16
+FLANNEL_SUBNET=10.245.2.1/24
+FLANNEL_MTU=1450
+FLANNEL_IPMASQ=true
+EOF
+```

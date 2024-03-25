@@ -36,11 +36,11 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: busybox
-          image: busybox
-          command:
-            - "sleep"
-            - "100000"
+        # - name: busybox
+        #   image: busybox
+        #   command:
+        #     - "sleep"
+        #     - "100000"
         - name: etcd
           image: registry.cn-hangzhou.aliyuncs.com/share_saas/etcd:latest
           imagePullPolicy: IfNotPresent
